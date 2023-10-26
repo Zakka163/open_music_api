@@ -26,9 +26,8 @@ class songsHandler {
 	}
 	async add_songs(request, h) {
 		this._validator.validate(request.payload)
-		const { title, year, genre, performer, duration, albumId } = request.payload
 
-		const song_id = await this._service.add_songs({ title, year, genre, performer, duration, albumId })
+		const song_id = await this._service.add_songs(request.payload)
 		const response = h.response({
 			status: 'success',
 			message: 'songs berhasil ditambahkan',
@@ -41,10 +40,9 @@ class songsHandler {
 	}
 	async edit_songs(request, h) {
 		this._validator.validate(request.payload)
-		const { title, year, genre, performer, duration, albumId } = request.payload
 		const { songsId } = request.params
 
-		const result = await this._service.edit_songs(songsId, { title, year, genre, performer, duration, albumId })
+		const result = await this._service.edit_songs(songsId, request.payload)
 		const response = h.response({
 			status: 'success',
 			message: 'songs berhasil diubah',

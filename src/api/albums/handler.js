@@ -17,9 +17,7 @@ class albumsHandler {
 	}
 	async add_albums(request, h) {
 		this._validator.validate(request.payload)
-		const { name, year } = request.payload
-
-		const album_id = await this._service.add_albums({ name, year })
+		const album_id = await this._service.add_albums(request.payload)
 		const response = h.response({
 			status: 'success',
 			message: 'albums berhasil ditambahkan',
@@ -32,10 +30,9 @@ class albumsHandler {
 	}
 	async edit_albums(request, h) {
 		this._validator.validate(request.payload)
-		const { name, year } = request.payload
 		const { albumId } = request.params
 
-		const result = await this._service.edit_albums(albumId, { name, year })
+		const result = await this._service.edit_albums(albumId, request.payload)
 		const response = h.response({
 			status: 'success',
 			message: 'albums berhasil diubah',

@@ -18,6 +18,12 @@ const songs = require('./api/songs/index')
 const songs_service = require('./services/postgres/songs_service')
 const songs_validator = require('./validator/songs/index')
 
+// users
+
+const users = require('./api/users/index')
+const users_service = require('./services/postgres/users_service')
+const users_validator = require('./validator/users/index')
+
 
 
 const init = async () => {
@@ -63,19 +69,29 @@ const init = async () => {
     return h.continue;
   });
 
-  await server.register([{
+  await server.register([
+  {
     plugin: songs,
     options: {
       service: new songs_service(),
       validator: songs_validator,
     }
-  }, {
+  }, 
+  {
     plugin: albums,
     options: {
       service: new albums_service(),
       validator: albums_validator,
     }
-  }]);
+  },
+  {
+    plugin: users,
+    options: {
+      service: new users_service(),
+      validator: users_validator,
+    }
+  }
+  ]);
 
   await server.start();
   console.log(`Server berjalan pada ${server.info.uri}`);
