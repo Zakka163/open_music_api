@@ -7,8 +7,8 @@ class usersHandler {
 	}
 
 	async get_users_by_id(request, h) {
-		const { usersId } = request.params
-		const result = await this._service.get_users_by_id(usersId)
+		const { id } = request.params
+		const result = await this._service.get_users_by_id(id)
 		return {
 			status: 'success',
 			data: {

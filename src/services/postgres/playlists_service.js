@@ -36,6 +36,18 @@ class playlists_service{
 		}
 		return result.rows
 	}
+
+	async get_playlists_by_id(id){
+		const query = {
+	      text: 'select * from playlists p where p.id = $1',
+	      values: [ id ],
+	    };
+	    const result = await this._pool.query(query);
+	    if (!result.rows.length){
+			throw new not_found_error('playlists tidak ditemukan')
+		}
+		return result.rows
+	}
 	async delete_playlists(id){
 		const query = {
 	      text: 'delete from playlists where id = $1',

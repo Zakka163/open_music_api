@@ -6,7 +6,7 @@ const routes = (handler) => [
   },
   {
     method: 'GET',
-    path: '/songs/{songsId}',
+    path: '/songs/{id}',
     handler: (request, h) => handler.get_songs_by_id(request, h),
   },
   {
@@ -16,12 +16,12 @@ const routes = (handler) => [
   },
   {
     method: 'PUT',
-    path: '/songs/{songsId}',
+    path: '/songs/{id}',
     handler: (request, h) => handler.edit_songs(request, h),
   },
   {
     method: 'DELETE',
-    path: '/songs/{songsId}',
+    path: '/songs/{id}',
     handler: (request, h) => handler.delete_songs(request, h),
   },
 ];

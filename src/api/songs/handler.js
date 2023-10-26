@@ -6,8 +6,8 @@ class songsHandler {
 		this._validator = validator
 	}
 	async get_songs_by_id(request, h) {
-		const { songsId } = request.params
-		const song = await this._service.get_songs_by_id(songsId)
+		const { id } = request.params
+		const song = await this._service.get_songs_by_id(id)
 		return {
 			status: 'success',
 			data: {
@@ -40,9 +40,9 @@ class songsHandler {
 	}
 	async edit_songs(request, h) {
 		this._validator.validate(request.payload)
-		const { songsId } = request.params
+		const { id } = request.params
 
-		const result = await this._service.edit_songs(songsId, request.payload)
+		const result = await this._service.edit_songs(id, request.payload)
 		const response = h.response({
 			status: 'success',
 			message: 'songs berhasil diubah',
@@ -55,9 +55,9 @@ class songsHandler {
 	}
 
 	async delete_songs(request, h) {
-		const { songsId } = request.params
+		const { id } = request.params
 
-		await this._service.delete_songs(songsId)
+		await this._service.delete_songs(id)
 		return {
 			status: 'success',
 			message: 'songs berhasil dihapus',

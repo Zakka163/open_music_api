@@ -35,7 +35,7 @@ class users_service {
 
 	async verify_username(username){
 		const query = {
-			text: 'select * from users s where s.username = $1',
+			text: 'select * from users u where u.username = $1',
 			values: [ username ],
 		};
 		const result = await this._pool.query(query);
@@ -72,7 +72,7 @@ class users_service {
 		// console.log(result.rows)
 
 		if (!result.rows.length) {
-	      throw new authentication_error('Kredensial yang Anda berikan salah');
+	      throw new authentication_error('username salah');
 	    }
  
 	    const { id, password: hashedPassword } = result.rows[0];
@@ -82,6 +82,7 @@ class users_service {
 	    if (!match) {
 	      throw new authentication_error('password salah');
 	    }
+
 	    return id;
   
 	}

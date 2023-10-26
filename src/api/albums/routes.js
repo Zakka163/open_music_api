@@ -6,17 +6,17 @@ const routes = (handler) => [
   },
   {
     method: 'GET',
-    path: '/albums/{albumId}',
+    path: '/albums/{id}',
     handler: (request, h) => handler.get_albums_by_id(request, h),
   },
   {
     method: 'PUT',
-    path: '/albums/{albumId}',
+    path: '/albums/{id}',
     handler: (request, h) => handler.edit_albums(request, h),
   },
   {
     method: 'DELETE',
-    path: '/albums/{albumId}',
+    path: '/albums/{id}',
     handler: (request, h) => handler.delete_albums(request, h),
   },
 ];

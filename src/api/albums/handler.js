@@ -6,8 +6,8 @@ class albumsHandler {
 		this._validator = validator
 	}
 	async get_albums_by_id(request, h) {
-		const { albumId } = request.params
-		const album = await this._service.get_albums_by_id(albumId)
+		const { id } = request.params
+		const album = await this._service.get_albums_by_id(id)
 		return {
 			status: 'success',
 			data: {
@@ -30,9 +30,9 @@ class albumsHandler {
 	}
 	async edit_albums(request, h) {
 		this._validator.validate(request.payload)
-		const { albumId } = request.params
+		const { id } = request.params
 
-		const result = await this._service.edit_albums(albumId, request.payload)
+		const result = await this._service.edit_albums(id, request.payload)
 		const response = h.response({
 			status: 'success',
 			message: 'albums berhasil diubah',
@@ -45,9 +45,9 @@ class albumsHandler {
 	}
 
 	async delete_albums(request, h) {
-		const { albumId } = request.params
+		const { id } = request.params
 
-		await this._service.delete_albums(albumId)
+		await this._service.delete_albums(id)
 		return {
 			status: 'success',
 			message: 'albums berhasil dihapus',

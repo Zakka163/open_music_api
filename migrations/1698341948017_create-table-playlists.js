@@ -8,7 +8,6 @@ exports.up = pgm => {
 	    name: {
 	      type: 'TEXT',
 	      notNull: true,
-	      unique: true,
 	    },
 	    owner: {
 	      type: 'VARCHAR(50)',

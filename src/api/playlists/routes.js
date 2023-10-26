@@ -2,28 +2,51 @@ const routes = (handler) => [
   {
     method: 'POST',
     path: '/playlists',
-    handler: (request, h) => handler.add_playlists(request, h)
+    handler: (request, h) => handler.add_playlists(request, h),
+    options:{
+      auth:"auth"
+    }
   },
   {
     method: 'GET',
     path: '/playlists',
     handler: (request, h) => handler.get_playlists(request, h),
+    options:{
+      auth:"auth"
+    }
   },
   {
     method: 'DELETE',
     path: '/playlists/{id}',
     handler: (request, h) => handler.delete_playlists(request, h),
+    options:{
+      auth:"auth"
+    }
   },
-  // {
-  //   method: 'GET',
-  //   path: '/playlists',
-  //   handler: (request, h) => handler.get_playlists(request, h),
-  // },
-  // {
-  //   method: 'PUT',
-  //   path: '/playlists/{id}',
-  //   handler: (request, h) => handler.edit_playlists(request, h),
-  // },
+  {
+    method: 'POST',
+    path: '/playlists/{id}/songs',
+    handler: (request, h) => handler.add_playlists_songs(request, h),
+    options:{
+      auth:"auth"
+    }
+  },
+  {
+    method: 'GET',
+    path: '/playlists/{id}/songs',
+    handler: (request, h) => handler.get_playlists_songs(request, h),
+    options:{
+      auth:"auth"
+    }
+  },
+  {
+    method: 'DELETE',
+    path: '/playlists/{id}/songs',
+    handler: (request, h) => handler.delete_playlists_songs(request, h),
+    options:{
+      auth:"auth"
+    }
+  },
 
 ];
 

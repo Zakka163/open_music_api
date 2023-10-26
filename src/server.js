@@ -24,6 +24,7 @@ const users_validator = require('./validator/users/index')
 // playlists
 const playlists = require('./api/playlists/index')
 const playlists_service = require('./services/postgres/playlists_service')
+const playlists_songs_service = require('./services/postgres/playlists_songs_service')
 const playlists_validator = require('./validator/playlists/index')
 
 // authentications
@@ -99,18 +100,6 @@ const init = async () => {
     }),
   });
   
-
-  server.route({
-      method: 'GET',
-      path: '/',
-      handler: function (request, h) {
-          return 'hello, world';
-      },
-      options: {
-        auth: 'auth',
-      },
-  });
-
   await server.register([
   {
     plugin: songs,
@@ -129,7 +118,8 @@ const init = async () => {
   {
     plugin: playlists,
     options: {
-      service: new playlists_service(),
+      playlists_service: new playlists_service(),
+      playlists_songs_service: new playlists_songs_service(),
       validator: playlists_validator,
     }
   },
