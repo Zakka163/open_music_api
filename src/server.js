@@ -1,5 +1,6 @@
 require('dotenv').config();
 const Hapi = require('@hapi/hapi');
+const Jwt = require('@hapi/jwt');
 
 
 // error
@@ -23,6 +24,12 @@ const songs_validator = require('./validator/songs/index')
 const users = require('./api/users/index')
 const users_service = require('./services/postgres/users_service')
 const users_validator = require('./validator/users/index')
+
+// authentications
+const authentications = require('./api/authentications/index')
+const authentications_service = require('./services/postgres/authentications_service')
+const authentications_validator = require('./validator/authentications/index')
+const token_manager = require('./tokenize/token_manager')
 
 
 
@@ -68,6 +75,40 @@ const init = async () => {
     // jika bukan error, lanjutkan dengan response sebelumnya (tanpa terintervensi)
     return h.continue;
   });
+  // registrasi plugin eksternal
+  await server.register([
+    {
+      plugin: Jwt,
+    },
+  ]);
+
+  server.auth.strategy('auth', 'jwt', {
+    keys: process.env.ACCESS_TOKEN_KEY,
+    verify: {
+      aud: false,
+      iss: false,
+      sub: false,
+      maxAgeSec: process.env.ACCESS_TOKEN_AGE,
+    },
+    validate: (artifacts) => ({
+      isValid: true,
+      credentials: {
+        id: artifacts.decoded.payload.id,
+      },
+    }),
+  });
+  
+
+  server.route({
+      method: 'GET',
+      path: '/',
+      handler: function (request, h) {
+          return 'hello, world';
+      },
+      options: {
+        auth: 'auth',
+      },
+  });
 
   await server.register([
   {
@@ -90,7 +131,16 @@ const init = async () => {
       service: new users_service(),
       validator: users_validator,
     }
-  }
+  },
+  {
+    plugin: authentications,
+    options: {
+      auth_service:new authentications_service(), 
+      user_service:new users_service(), 
+      token_manager, 
+      validator:authentications_validator,
+    },
+  },
   ]);
 
   await server.start();
