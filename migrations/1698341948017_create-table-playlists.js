@@ -1,4 +1,3 @@
-
 exports.up = pgm => {
 	pgm.createTable('playlists', {
 	    id: {
