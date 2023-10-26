@@ -17,7 +17,7 @@ class users_service {
 		await this.verify_username(username)
 		const hash_password = await bcrypt.hash(password, 10);
 		const query = {
-			text: 'insert into users values($1,$2,$3,$4)',
+			text: 'insert into users values($1,$2,$3,$4) returning id',
 			values: [nanoid(14), username, hash_password, fullname],
 		};
 
