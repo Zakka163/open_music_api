@@ -4,26 +4,27 @@ const Jwt = require('@hapi/jwt');
 
 
 // error
-
 const client_error = require('./exceptions/client_error')
 
 // albums
-
 const albums = require('./api/albums/index')
 const albums_service = require('./services/postgres/albums_service')
 const albums_validator = require('./validator/albums/index')
 
 // // songs
-
 const songs = require('./api/songs/index')
 const songs_service = require('./services/postgres/songs_service')
 const songs_validator = require('./validator/songs/index')
 
 // users
-
 const users = require('./api/users/index')
 const users_service = require('./services/postgres/users_service')
 const users_validator = require('./validator/users/index')
+
+// playlists
+const playlists = require('./api/playlists/index')
+const playlists_service = require('./services/postgres/playlists_service')
+const playlists_validator = require('./validator/playlists/index')
 
 // authentications
 const authentications = require('./api/authentications/index')
@@ -123,6 +124,13 @@ const init = async () => {
     options: {
       service: new albums_service(),
       validator: albums_validator,
+    }
+  },
+  {
+    plugin: playlists,
+    options: {
+      service: new playlists_service(),
+      validator: playlists_validator,
     }
   },
   {
