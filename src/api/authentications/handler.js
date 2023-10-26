@@ -13,8 +13,7 @@ class auth_handler {
 		const id = await this._user_service.verify_user_credential(request.payload)
 		const acces_token = this._token_manager.generate_acces_token({ id });
       	const refresh_token = this._token_manager.generate_refresh_token({ id });
-      	console.log(id)
-      	console.log(acces_token,refresh_token)
+
       	await this._auth_service.add_refresh_token(refresh_token);
 
 		const response = h.response({
