@@ -29,7 +29,6 @@ class playlists_song_activities_service {
 			throw new invariant_error('playlists_song_activities gagal ditambahkan');
 		}
 
-		console.log(action);
 
 
 		return result.rows[0].id;
