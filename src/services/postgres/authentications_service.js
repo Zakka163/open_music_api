@@ -1,4 +1,4 @@
-const invariant_error = require('../../exceptions/invariant_error')
+const invariant_error = require('../../exceptions/invariant_error');
 const { nanoid } = require('nanoid');
 const { Pool } = require('pg');
 
@@ -7,13 +7,13 @@ const { Pool } = require('pg');
 class authentications_service {
 
 	constructor() {
-		this._pool = new Pool()
+		this._pool = new Pool();
 	}
 
 	async add_refresh_token(token) {
 		const query = {
 			text: 'insert into authentications values($1,$2)',
-			values: [nanoid(20),token],
+			values: [nanoid(20),token]
 		};
 
 		await this._pool.query(query);
@@ -23,7 +23,7 @@ class authentications_service {
 	async verify_refresh_token({ refreshToken }) {
 		const query = {
 			text: 'SELECT * FROM authentications WHERE token = $1',
-			values: [refreshToken],
+			values: [refreshToken]
 		};
 
 		const result = await this._pool.query(query);
@@ -35,11 +35,11 @@ class authentications_service {
 	async delete_refresh_token({ refreshToken }) {
 		const query = {
 			text: 'DELETE FROM authentications WHERE token = $1',
-			values: [refreshToken],
+			values: [refreshToken]
 		};
 		await this._pool.query(query);
 	}
 
 }
 
-module.exports = authentications_service
+module.exports = authentications_service;

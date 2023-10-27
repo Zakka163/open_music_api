@@ -1,24 +1,24 @@
-exports.up = pgm => {
+exports.up = (pgm) => {
 	pgm.createTable('playlists_songs', {
-	    id: {
-	      type: 'VARCHAR',
-	      primaryKey: true,
-	    },
+		id: {
+			type: 'VARCHAR',
+			primaryKey: true
+		},
 		playlistId: {
-	      type: 'VARCHAR',
-	      notNull: false,
-	      references: '"playlists"',
-	      onDelete: 'cascade',
-	    },
-	    songId: {
-	      type: 'VARCHAR',
-	      notNull: false,
-	      references: '"songs"',
-	      onDelete: 'cascade',
-	    },
+			type: 'VARCHAR',
+			notNull: false,
+			references: '"playlists"',
+			onDelete: 'cascade'
+		},
+		songId: {
+			type: 'VARCHAR',
+			notNull: false,
+			references: '"songs"',
+			onDelete: 'cascade'
+		}
 	});
 };
 
-exports.down = pgm => {
-	pgm.dropTable('playlists_songs')
+exports.down = (pgm) => {
+	pgm.dropTable('playlists_songs');
 };
