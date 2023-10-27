@@ -12,6 +12,7 @@ class playlists_service{
 	constructor(){
 		this._pool = new Pool()
 	}
+	
 	async add_playlists(owner,{name}){
 		const query = {
 	      text: 'INSERT INTO playlists VALUES($1, $2, $3 ) RETURNING id',
@@ -37,10 +38,10 @@ class playlists_service{
 		return result.rows
 	}
 
-	async get_playlists_by_id(id){
+	async get_playlists_by_id(playlist_id){
 		const query = {
 	      text: 'select p.id,p.name,u.username from playlists p join public.users u  on u."id" = p.owner where p.id= $1',
-	      values: [ id ],
+	      values: [ playlist_id ],
 	    };
 	    const result = await this._pool.query(query);
 	    if (!result.rows.length){
@@ -48,20 +49,20 @@ class playlists_service{
 		}
 		return result.rows[0]
 	}
-	async delete_playlists(id){
+	async delete_playlists(playlist_id){
 		const query = {
 	      text: 'delete from playlists where id = $1',
-	      values: [id],
+	      values: [playlist_id],
 	    };
 	    const result = await this._pool.query(query);
 	    if (!result.rowCount) {
 	      throw new not_found_error('Gagal menghapus playlists. Id tidak ditemukan');
 	    }
 	}
-	async verify_playlists_owner(id,owner){
+	async verify_playlists_owner(playlist_id,owner){
 		const query = {
 	      text: 'select * from playlists p where p.id = $1',
-	      values: [ id ],
+	      values: [ playlist_id ],
 	    };
 	    const result = await this._pool.query(query);
 	    if (!result.rows.length) {

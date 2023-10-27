@@ -52,17 +52,17 @@ class songs_service{
 		return result.rows
 	}
 
-	async get_songs_by_id(id){
+	async get_songs_by_id(song_id){
 		const query = {
 			text :`select * from songs s where s.id = $1`,
-			values:[id]
+			values:[song_id]
 		}
 		const result = await this._pool.query(query)
 
 		if (!result.rows.length){
 			throw new not_found_error('songs tidak ditemukan')
 		}
-		return result.rows
+		return result.rows[0]
 	}
 
 	async edit_songs(id,{title,year,genre,performer,duration,albumId}){

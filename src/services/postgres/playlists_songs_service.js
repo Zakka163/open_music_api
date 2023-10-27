@@ -13,13 +13,12 @@ class playlists_songs_service{
 		this._pool = new Pool()
 	}
 
-	async add_playlists_songs(playlistId,{songId}){
-		await this.verify_songs(songId)
+	async add_playlists_songs(playlist_id,song_id){
+		// await this.verify_songs(songId)
 		const query = {
 	      text: 'INSERT INTO playlists_songs VALUES($1, $2 )',
-	      values: [ playlistId,songId ],
+	      values: [ playlist_id,song_id ],
 	    };
-	    console.log(playlistId,songId)
 	    const result = await this._pool.query(query);
 	    console.log(result)
 	    if (!result.rowCount) {
@@ -28,10 +27,10 @@ class playlists_songs_service{
 
 	}
 
-	async get_playlists_songs(playlistId){
+	async get_playlists_songs(playlist_id){
 		const query = {
 	      text: `select s.id,s.title,s.performer from songs s join playlists_songs ps on ps."songId" = s.id where ps."playlistId" = $1 `,
-	      values: [ playlistId ],
+	      values: [ playlist_id ],
 	    };
 	    const result = await this._pool.query(query);
 	    if (!result.rows.length){
@@ -41,11 +40,11 @@ class playlists_songs_service{
 	}
 
 
-	async delete_playlists_songs(playlistId,{songId}){
-		await this.verify_songs(songId)
+	async delete_playlists_songs(playlist_id,song_id){
+		// await this.verify_songs(songId)
 		const query = {
 	      text: 'delete from playlists_songs ps  where ps."playlistId" = $1 and ps."songId" = $2',
-	      values: [ playlistId,songId ],
+	      values: [ playlist_id,song_id ],
 	    };
 	    const result = await this._pool.query(query);
 	    if (!result.rowCount) {
@@ -53,17 +52,17 @@ class playlists_songs_service{
 	    }
 	}
 
-	async verify_songs(id){
-		const query = {
-			text: 'select * from songs s where s.id = $1',
-			values: [ id ],
-		};
-		const result = await this._pool.query(query);
-		console.log(result)
-		if (!result.rows.length > 0) {
-	      throw new not_found_error('songs tidak ditemukan');
-	    }
-	}
+	// async verify_songs(id){
+	// 	const query = {
+	// 		text: 'select * from songs s where s.id = $1',
+	// 		values: [ id ],
+	// 	};
+	// 	const result = await this._pool.query(query);
+	// 	console.log(result)
+	// 	if (!result.rows.length > 0) {
+	//       throw new not_found_error('songs tidak ditemukan');
+	//     }
+	// }
 }
 
 module.exports = playlists_songs_service
