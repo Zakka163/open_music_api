@@ -1,4 +1,5 @@
 const invariant_error = require('../../exceptions/invariant_error')
+const { nanoid } = require('nanoid');
 const { Pool } = require('pg');
 
 
@@ -11,8 +12,8 @@ class authentications_service {
 
 	async add_refresh_token(token) {
 		const query = {
-			text: 'insert into authentications values($1)',
-			values: [token],
+			text: 'insert into authentications values($1,$2)',
+			values: [nanoid(20),token],
 		};
 
 		await this._pool.query(query);

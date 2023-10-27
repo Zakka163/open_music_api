@@ -29,9 +29,9 @@ class playlists_service {
 	async get_playlists(owner) {
 		const query = {
 			text: `	select p.id,p.name,u.username from playlists p 
-					join collaborations_playlist cp on cp."playlistId" = p.id
-					join users u on u.id = p."owner" 
-					where cp."userId"  = $1 or p.owner = $1`,
+					left join collaborations_playlist cp on cp."playlistId" = p.id
+					left join users u on u.id = p."owner" 
+					where cp."userId"  = $1 or p."owner"  = $1`,
 			values: [owner],
 		};
 		const result = await this._pool.query(query);
