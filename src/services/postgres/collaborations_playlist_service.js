@@ -15,14 +15,14 @@ class collaborations_playlist_service {
 
 	async add_collaborations_playlist({playlistId, userId}) {
 		const query = {
-			text: 'INSERT INTO collaborations_playlist VALUES($1, $2 )',
-			values: [ playlistId, userId ],
+			text: 'INSERT INTO collaborations_playlist VALUES($1, $2, $3 ) RETURNING id',
+			values: [ nanoid(20),playlistId, userId ],
 		};
-		console.log(playlistId, userId)
 		const result = await this._pool.query(query);
 		if (!result.rowCount) {
 			throw new invariant_error('collaborations_playlist gagal ditambahkan');
 		}
+		return result.rows[0].id;
 
 	}
 

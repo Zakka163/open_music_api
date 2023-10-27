@@ -14,7 +14,7 @@ class playlistsHandler {
 		this._validator.validate_playlists_payload(request.payload)
 
 		const result = await this._playlists_service.add_playlists(owner,request.payload)
-		
+		console.log('add playlist : ',owner)
 		const response = h.response({
 			status: 'success',
 			message: 'playlists berhasil ditambahkan',
@@ -46,7 +46,7 @@ class playlistsHandler {
 		await this._playlists_service.get_playlists_by_id(playlist_id)
 		await this._playlists_service.verify_playlists_owner(playlist_id,owner)
 		await this._playlists_service.delete_playlists(playlist_id)
-
+		console.log('delete playlist owner :' ,owner)
 		return {
 			status: 'success',
 			message: 'playlists berhasil dihapus',
@@ -64,13 +64,14 @@ class playlistsHandler {
 
 		await this._songs_service.get_songs_by_id(song_id)
 		await this._playlists_service.get_playlists_by_id(playlist_id)
-		await this._playlists_songs_service.verify_playlists_collab(user_id)
+		await this._playlists_songs_service.verify_playlists_collab(playlist_id,user_id)
 
 		const result = await this._playlists_songs_service.add_playlists_songs(playlist_id,song_id)
 
 		const response = h.response({
 			status: 'success',
 			message: 'playlists_songs berhasil ditambahkan',
+			
 		});
 		response.code(201);
 		return response;
@@ -88,7 +89,7 @@ class playlistsHandler {
 
 		await this._songs_service.get_songs_by_id(song_id)
 		await this._playlists_service.get_playlists_by_id(playlist_id)
-		await this._playlists_songs_service.verify_playlists_collab(user_id)
+		await this._playlists_songs_service.verify_playlists_collab(playlist_id,user_id)
 
 		await this._playlists_songs_service.delete_playlists_songs(playlist_id,song_id)
 
@@ -105,7 +106,7 @@ class playlistsHandler {
 		const { id: user_id } = request.auth.credentials;
 
 
-		await this._playlists_songs_service.verify_playlists_collab(user_id)
+		await this._playlists_songs_service.verify_playlists_collab(playlist_id,user_id)
 		const result = await this._playlists_service.get_playlists_by_id(playlist_id)
 		const result_songs = await this._playlists_songs_service.get_playlists_songs(playlist_id)
 

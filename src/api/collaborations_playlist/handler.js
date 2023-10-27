@@ -19,11 +19,14 @@ class Handler {
 		await this._playlists_service.get_playlists_by_id(playlistId)
 		await this._playlists_service.verify_playlists_owner(playlistId,owner)
 
-		await this._collaborations_service.add_collaborations_playlist(request.payload)
+		const result = await this._collaborations_service.add_collaborations_playlist(request.payload)
 
 		const response = h.response({
 			status: 'success',
 			message: 'playlists_songs berhasil ditambahkan',
+			data:{
+				collaborationId : result
+			}
 		});
 		response.code(201);
 		return response;

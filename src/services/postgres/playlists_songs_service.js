@@ -16,14 +16,14 @@ class playlists_songs_service {
 	async add_playlists_songs(playlist_id, song_id) {
 		// await this.verify_songs(songId)
 		const query = {
-			text: 'INSERT INTO playlists_songs VALUES($1, $2 )',
-			values: [playlist_id, song_id],
+			text: 'INSERT INTO playlists_songs VALUES($1, $2,$3 ) RETURNING id',
+			values: [nanoid(20),playlist_id, song_id],
 		};
 		const result = await this._pool.query(query);
-		console.log(result)
 		if (!result.rowCount) {
 			throw new invariant_error('playlists gagal ditambahkan');
 		}
+		return result.rows[0].id;
 
 	}
 
@@ -60,8 +60,7 @@ class playlists_songs_service {
 
 
 		const result = await this._pool.query(query);
-		console.log('user id :',user_id)
-		console.log(result.rows)
+
 		const playlist = result.rows[0]
 		if (!result.rows.length) {
 			throw new not_found_error('playlists tidak ditemukan')
@@ -76,17 +75,6 @@ class playlists_songs_service {
 
 	}
 
-	// async verify_songs(id){
-	// 	const query = {
-	// 		text: 'select * from songs s where s.id = $1',
-	// 		values: [ id ],
-	// 	};
-	// 	const result = await this._pool.query(query);
-	// 	console.log(result)
-	// 	if (!result.rows.length > 0) {
-	//       throw new not_found_error('songs tidak ditemukan');
-	//     }
-	// }
 }
 
 module.exports = playlists_songs_service

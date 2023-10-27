@@ -31,13 +31,14 @@ class playlists_service {
 			text: `	select p.id,p.name,u.username from playlists p 
 					join collaborations_playlist cp on cp."playlistId" = p.id
 					join users u on u.id = p."owner" 
-					where cp."userId"  = $1`,
+					where cp."userId"  = $1 or p.id = $1`,
 			values: [owner],
 		};
 		const result = await this._pool.query(query);
-		if (!result.rows.length) {
-			throw new not_found_error('playlists tidak ditemukan')
-		}
+		console.log(result.rows,"id : ",owner)
+		// if (!result.rows.length) {
+		// 	throw new not_found_error('playlists tidak ditemukan')
+		// }
 		return result.rows
 	}
 
@@ -47,7 +48,6 @@ class playlists_service {
 			values: [playlist_id],
 		};
 		const result = await this._pool.query(query);
-		console.log(result.rows)
 		if (!result.rows.length) {
 			throw new not_found_error('playlists tidak ditemukan')
 		}

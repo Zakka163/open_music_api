@@ -1,6 +1,10 @@
 
 exports.up = pgm => {
 	pgm.createTable('collaborations_playlist', {
+	    id: {
+	      type: 'VARCHAR',
+	      primaryKey: true,
+	    },
 		playlistId: {
 	      type: 'VARCHAR',
 	      notNull: false,
