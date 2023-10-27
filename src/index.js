@@ -15,7 +15,7 @@ const users_validator = require('./validator/users/index')
 
 // collaborations_playlist
 const collaborations_playlist = require('./api/collaborations_playlist/index')
-// const collaborations_playlist_service = require('./services/postgres/collaborations_playlist_service')
+const collaborations_service = require('./services/postgres/collaborations_playlist_service')
 const collaborations_playlist_validator = require('./validator/collaborations_playlist/index')
 
 
@@ -34,6 +34,7 @@ const token_manager = require('./tokenize/token_manager')
 
 // initiaion
 
+const collaborations_services = new collaborations_service()
 const songs_services = new songs_service()
 const albums_services = new albums_service()
 const users_services = new users_service()
@@ -48,7 +49,7 @@ const plugins = [
       service: songs_services,
       validator: songs_validator,
     }
-  }, 
+  },
   {
     plugin: albums,
     options: {
@@ -75,17 +76,19 @@ const plugins = [
   {
     plugin: collaborations_playlist,
     options: {
-      // service: new collaborations_playlist_service(),
+      users_service: users_services,
+      playlists_service: playlists_services,
+      collaborations_service: collaborations_services,
       validator: collaborations_playlist_validator,
     }
   },
   {
     plugin: authentications,
     options: {
-      auth_service:authentications_services, 
-      user_service:users_services, 
-      token_manager, 
-      validator:authentications_validator,
+      auth_service: authentications_services,
+      users_service: users_services,
+      token_manager,
+      validator: authentications_validator,
     },
   },
 ]

@@ -1,9 +1,9 @@
 const client_error = require('../../exceptions/client_error')
 
 class auth_handler {
-	constructor(auth_service, user_service, token_manager, validator) {
+	constructor(auth_service, users_service, token_manager, validator) {
 	    this._auth_service = auth_service;
-	    this._user_service = user_service;
+	    this._user_service = users_service;
 	    this._token_manager = token_manager;
 	    this._validator = validator;
   }

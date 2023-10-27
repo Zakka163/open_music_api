@@ -72,7 +72,7 @@ const init = async () => {
       },
     }),
   });
-  
+
   // registrasi plugins
   await server.register(plugins)
 

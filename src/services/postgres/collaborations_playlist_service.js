@@ -8,60 +8,35 @@ const moment = require('moment')
 
 
 
-class collaborations_playlist_service{
-	constructor(){
+class collaborations_playlist_service {
+	constructor() {
 		this._pool = new Pool()
 	}
 
-	async add_collaborations_playlist({playlistId,userId}){
+	async add_collaborations_playlist({playlistId, userId}) {
 		const query = {
-	      text: 'INSERT INTO collaborations_playlist VALUES($1, $2 )',
-	      values: [ playlistId,userId ],
-	    };
-	    const result = await this._pool.query(query);
-	    console.log(result)
-	    if (!result.rowCount) {
-	      throw new invariant_error('collaborations_playlist gagal ditambahkan');
-	    }
-
-	}
-
-	async get_collaborations_playlist(playlistId){
-		const query = {
-	      text: `select s.id,s.title,s.performer from songs s join collaborations_playlist ps on ps."songId" = s.id where ps."playlistId" = $1 `,
-	      values: [ playlistId ],
-	    };
-	    const result = await this._pool.query(query);
-	    if (!result.rows.length){
-			throw new not_found_error('songs tidak ditemukan')
+			text: 'INSERT INTO collaborations_playlist VALUES($1, $2 )',
+			values: [ playlistId, userId ],
+		};
+		console.log(playlistId, userId)
+		const result = await this._pool.query(query);
+		if (!result.rowCount) {
+			throw new invariant_error('collaborations_playlist gagal ditambahkan');
 		}
-		return result.rows
+
 	}
 
-
-	async delete_collaborations_playlist(playlistId,{songId}){
-		await this.verify_songs(songId)
+	async delete_collaborations_playlist({playlistId, userId}) {
 		const query = {
-	      text: 'delete from collaborations_playlist ps  where ps."playlistId" = $1 and ps."songId" = $2',
-	      values: [ playlistId,songId ],
-	    };
-	    const result = await this._pool.query(query);
-	    if (!result.rowCount) {
-	      throw new not_found_error('Gagal menghapus songs dari playlists');
-	    }
-	}
-
-	async verify_songs(id){
-		const query = {
-			text: 'select * from songs s where s.id = $1',
-			values: [ id ],
+			text: 'delete from collaborations_playlist ps  where ps."playlistId" = $1 and ps."userId" = $2',
+			values: [playlistId, userId],
 		};
 		const result = await this._pool.query(query);
-		console.log(result)
-		if (!result.rows.length > 0) {
-	      throw new not_found_error('songs tidak ditemukan');
-	    }
+		if (!result.rowCount) {
+			throw new not_found_error('Gagal menghapus collaborations_playlist');
+		}
 	}
+
 }
 
 module.exports = collaborations_playlist_service

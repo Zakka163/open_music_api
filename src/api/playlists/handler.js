@@ -57,14 +57,14 @@ class playlistsHandler {
 	async add_playlists_songs(request, h) {
 
 		const { id : playlist_id } = request.params
-		const { id : owner } = request.auth.credentials;
-		const { song_id : songId } = req.payload
+		const { id : user_id } = request.auth.credentials;
+		const { songId : song_id } = request.payload
 
 		this._validator.validate_playlists_songs_payload(request.payload)
 
 		await this._songs_service.get_songs_by_id(song_id)
 		await this._playlists_service.get_playlists_by_id(playlist_id)
-		await this._playlists_service.verify_playlists_owner(playlist_id,owner)
+		await this._playlists_songs_service.verify_playlists_collab(user_id)
 
 		const result = await this._playlists_songs_service.add_playlists_songs(playlist_id,song_id)
 
@@ -81,14 +81,14 @@ class playlistsHandler {
 	async delete_playlists_songs(request, h) {
 
 		const { id : playlist_id } = request.params
-		const { id: owner } = request.auth.credentials;
-		const { song_id : songId } = req.payload
+		const { id: user_id } = request.auth.credentials;
+		const { songId : song_id } = request.payload
 
 		this._validator.validate_playlists_songs_payload(request.payload)
 
 		await this._songs_service.get_songs_by_id(song_id)
 		await this._playlists_service.get_playlists_by_id(playlist_id)
-		await this._playlists_service.verify_playlists_owner(playlist_id,owner)
+		await this._playlists_songs_service.verify_playlists_collab(user_id)
 
 		await this._playlists_songs_service.delete_playlists_songs(playlist_id,song_id)
 
@@ -102,10 +102,10 @@ class playlistsHandler {
 	async get_playlists_songs(request, h) {
 
 		const { id : playlist_id } = request.params
-		const { id: owner } = request.auth.credentials;
+		const { id: user_id } = request.auth.credentials;
 
 
-		await this._playlists_service.verify_playlists_owner(playlist_id,owner)
+		await this._playlists_songs_service.verify_playlists_collab(user_id)
 		const result = await this._playlists_service.get_playlists_by_id(playlist_id)
 		const result_songs = await this._playlists_songs_service.get_playlists_songs(playlist_id)
 

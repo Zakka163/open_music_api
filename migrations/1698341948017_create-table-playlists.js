@@ -1,7 +1,7 @@
 exports.up = pgm => {
 	pgm.createTable('playlists', {
 	    id: {
-	      type: 'VARCHAR(50)',
+	      type: 'VARCHAR',
 	      primaryKey: true,
 	    },
 	    name: {
@@ -9,7 +9,7 @@ exports.up = pgm => {
 	      notNull: true,
 	    },
 	    owner: {
-	      type: 'VARCHAR(50)',
+	      type: 'VARCHAR',
 	      notNull: false,
 	      references: '"users"',
 	      onDelete: 'cascade',

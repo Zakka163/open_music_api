@@ -14,12 +14,12 @@ class users_service {
 	constructor() {
 		this._pool = new Pool()
 	}
-	async add_users({username,password,fullname}){
+	async add_users({ username, password, fullname }) {
 		await this.verify_username(username)
 		const hash_password = await bcrypt.hash(password, 10);
 		const query = {
 			text: 'insert into users values($1,$2,$3,$4) returning id',
-			values: [nanoid(14), username, hash_password, fullname],
+			values: [nanoid(20), username, hash_password, fullname],
 		};
 
 		const result = await this._pool.query(query);
@@ -33,58 +33,54 @@ class users_service {
 
 
 
-	async verify_username(username){
+	async verify_username(username) {
 		const query = {
 			text: 'select * from users u where u.username = $1',
-			values: [ username ],
+			values: [username],
 		};
 		const result = await this._pool.query(query);
 		if (result.rows.length > 0) {
-	      throw new invariant_error('Gagal menambahkan user. Username sudah digunakan.');
-	    }
+			throw new invariant_error('Gagal menambahkan user. Username sudah digunakan.');
+		}
 	}
-
 
 	async get_users_by_id(id) {
 		const query = {
-			text: `select * from users a where a.id = $1`,
+			text: `select * from users s where s.id = $1`,
 			values: [id]
 		}
-
 		const result = await this._pool.query(query)
-
 
 		if (!result.rows.length) {
 			throw new not_found_error('users tidak ditemukan')
 		}
-		result.rows[0].songs = songs_result.rows
-
-		return result.rows
+		return result.rows[0]
 	}
 
-	async verify_user_credential({username, password}) {
+
+	async verify_user_credential({ username, password }) {
 		// console.log(username, password)
 		const query = {
 			text: 'select * from users s where s.username = $1',
-			values: [ username ],
+			values: [username],
 		};
 		const result = await this._pool.query(query);
 		// console.log(result.rows)
 
 		if (!result.rows.length) {
-	      throw new authentication_error('username salah');
-	    }
- 
-	    const { id, password: hashedPassword } = result.rows[0];
-	 
-	    const match = await bcrypt.compare(password, hashedPassword);
-	 
-	    if (!match) {
-	      throw new authentication_error('password salah');
-	    }
+			throw new authentication_error('username salah');
+		}
 
-	    return id;
-  
+		const { id, password: hashedPassword } = result.rows[0];
+
+		const match = await bcrypt.compare(password, hashedPassword);
+
+		if (!match) {
+			throw new authentication_error('password salah');
+		}
+
+		return id;
+
 	}
 
 }
