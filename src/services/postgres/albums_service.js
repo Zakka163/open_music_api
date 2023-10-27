@@ -15,10 +15,9 @@ class albums_service {
 
 	async add_albums({ name, year }) {
 		const createdAt = moment()
-		const updatedAt = createdAt;
 		const query = {
-			text: 'INSERT INTO albums VALUES($1, $2, $3, $4,$5 ) RETURNING id',
-			values: [nanoid(14), name, year, createdAt, updatedAt],
+			text: 'insert into albums values($1, $2, $3, $4,$5) returning id',
+			values: [nanoid(14), name, year, createdAt, createdAt],
 		};
 
 		const result = await this._pool.query(query);

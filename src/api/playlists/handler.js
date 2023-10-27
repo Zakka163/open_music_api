@@ -1,11 +1,13 @@
 const client_error = require('../../exceptions/client_error')
 
 class playlistsHandler {
-	constructor(playlists_service,playlists_songs_service,songs_service,validator) {
+	constructor(playlists_service,playlists_songs_service,songs_service,playlists_song_activities_service,validator) {
 		this._playlists_service = playlists_service
 		this._songs_service = songs_service
 		this._playlists_songs_service = playlists_songs_service
+		this._playlists_song_activities_service = playlists_song_activities_service 
 		this._validator = validator
+
 	}
 
 	async add_playlists(request, h) {
@@ -14,7 +16,6 @@ class playlistsHandler {
 		this._validator.validate_playlists_payload(request.payload)
 
 		const result = await this._playlists_service.add_playlists(owner,request.payload)
-		console.log('add playlist : ',owner)
 		const response = h.response({
 			status: 'success',
 			message: 'playlists berhasil ditambahkan',
@@ -28,8 +29,8 @@ class playlistsHandler {
 
 
 	async get_playlists(request, h) {
-		const { id: owner } = request.auth.credentials;
-		const result = await this._playlists_service.get_playlists(owner)
+		const { id: user_id } = request.auth.credentials;
+		const result = await this._playlists_service.get_playlists(user_id)
 		return {
 			status: 'success',
 			data: {
@@ -43,10 +44,9 @@ class playlistsHandler {
 		const { id : playlist_id } = request.params
 		const { id: owner } = request.auth.credentials;
 
-		await this._playlists_service.get_playlists_by_id(playlist_id)
+		// await this._playlists_service.get_playlists_by_id(playlist_id)
 		await this._playlists_service.verify_playlists_owner(playlist_id,owner)
 		await this._playlists_service.delete_playlists(playlist_id)
-		console.log('delete playlist owner :' ,owner)
 		return {
 			status: 'success',
 			message: 'playlists berhasil dihapus',
@@ -59,14 +59,16 @@ class playlistsHandler {
 		const { id : playlist_id } = request.params
 		const { id : user_id } = request.auth.credentials;
 		const { songId : song_id } = request.payload
+		const action = 'add'
 
 		this._validator.validate_playlists_songs_payload(request.payload)
 
 		await this._songs_service.get_songs_by_id(song_id)
-		await this._playlists_service.get_playlists_by_id(playlist_id)
+		// await this._playlists_service.get_playlists_by_id(playlist_id)
 		await this._playlists_songs_service.verify_playlists_collab(playlist_id,user_id)
 
 		const result = await this._playlists_songs_service.add_playlists_songs(playlist_id,song_id)
+		await this._playlists_song_activities_service.add_playlists_song_activities(playlist_id,user_id,song_id,action)
 
 		const response = h.response({
 			status: 'success',
@@ -84,14 +86,16 @@ class playlistsHandler {
 		const { id : playlist_id } = request.params
 		const { id: user_id } = request.auth.credentials;
 		const { songId : song_id } = request.payload
-
+		const action = 'delete'
 		this._validator.validate_playlists_songs_payload(request.payload)
 
 		await this._songs_service.get_songs_by_id(song_id)
-		await this._playlists_service.get_playlists_by_id(playlist_id)
+		// await this._playlists_service.get_playlists_by_id(playlist_id)
 		await this._playlists_songs_service.verify_playlists_collab(playlist_id,user_id)
 
 		await this._playlists_songs_service.delete_playlists_songs(playlist_id,song_id)
+		await this._playlists_song_activities_service.add_playlists_song_activities(playlist_id,user_id,song_id,action)
+
 
 		return {
 			status: 'success',
@@ -115,6 +119,25 @@ class playlistsHandler {
 			status: 'success',
 			data: {
 				playlist:result
+			},
+		};
+	}
+
+	async get_playlists_activities(request, h) {
+
+		const { id : playlist_id } = request.params
+		const { id: user_id } = request.auth.credentials;
+
+
+		await this._playlists_songs_service.verify_playlists_collab(playlist_id,user_id)
+		const result = await this._playlists_service.get_playlists_by_id(playlist_id)
+		const result_activities = await this._playlists_song_activities_service.get_playlists_song_activities(playlist_id)
+
+		return {
+			status: 'success',
+			data: {
+				playlistId:result.id,
+				activities:result_activities
 			},
 		};
 	}

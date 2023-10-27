@@ -15,7 +15,7 @@ class collaborations_playlist_service {
 
 	async add_collaborations_playlist({playlistId, userId}) {
 		const query = {
-			text: 'INSERT INTO collaborations_playlist VALUES($1, $2, $3 ) RETURNING id',
+			text: 'insert into collaborations_playlist values($1, $2, $3) returning id',
 			values: [ nanoid(20),playlistId, userId ],
 		};
 		const result = await this._pool.query(query);

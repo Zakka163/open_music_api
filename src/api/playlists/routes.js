@@ -47,6 +47,14 @@ const routes = (handler) => [
       auth:"auth"
     }
   },
+  {
+    method: 'GET',
+    path: '/playlists/{id}/activities',
+    handler: (request, h) => handler.get_playlists_activities(request, h),
+    options:{
+      auth:"auth"
+    }
+  },
 
 ];
 

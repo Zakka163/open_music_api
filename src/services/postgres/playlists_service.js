@@ -15,7 +15,7 @@ class playlists_service {
 
 	async add_playlists(owner, { name }) {
 		const query = {
-			text: 'INSERT INTO playlists VALUES($1, $2, $3 ) RETURNING id',
+			text: 'insert into playlists values($1, $2, $3) returning id',
 			values: [nanoid(20), name, owner],
 		};
 		const result = await this._pool.query(query);
@@ -26,16 +26,16 @@ class playlists_service {
 		return result.rows[0].id;
 	}
 
-	async get_playlists(owner) {
+	async get_playlists(user_id) {
 		const query = {
 			text: `	select p.id,p.name,u.username from playlists p 
 					left join collaborations_playlist cp on cp."playlistId" = p.id
 					left join users u on u.id = p."owner" 
 					where cp."userId"  = $1 or p."owner"  = $1`,
-			values: [owner],
+			values: [user_id],
 		};
 		const result = await this._pool.query(query);
-		console.log(result.rows,"id : ",owner)
+		// console.log(result.rows,"id : ",owner)
 		// if (!result.rows.length) {
 		// 	throw new not_found_error('playlists tidak ditemukan')
 		// }

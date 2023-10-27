@@ -23,6 +23,7 @@ const collaborations_playlist_validator = require('./validator/collaborations_pl
 const playlists = require('./api/playlists/index')
 const playlists_service = require('./services/postgres/playlists_service')
 const playlists_songs_service = require('./services/postgres/playlists_songs_service')
+const playlists_song_activities_service = require('./services/postgres/playlists_song_activities_service')
 const playlists_validator = require('./validator/playlists/index')
 
 // authentications
@@ -40,6 +41,7 @@ const albums_services = new albums_service()
 const users_services = new users_service()
 const playlists_services = new playlists_service()
 const playlists_songs_services = new playlists_songs_service()
+const playlists_song_activities_services = new playlists_song_activities_service()
 const authentications_services = new authentications_service()
 
 const plugins = [
@@ -62,8 +64,10 @@ const plugins = [
     options: {
       playlists_service: playlists_services,
       playlists_songs_service: playlists_songs_services,
+      playlists_song_activities_service:playlists_song_activities_services,
       songs_service: songs_services,
       validator: playlists_validator,
+
     }
   },
   {
