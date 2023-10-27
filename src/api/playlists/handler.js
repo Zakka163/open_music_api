@@ -39,7 +39,7 @@ class playlistsHandler {
 		const { id } = request.params
 		const { id: owner } = request.auth.credentials;
 		await this._playlists_service.verify_playlists_owner(id,owner)
-		await this._service.delete_playlists(id)
+		await this._playlists_service.delete_playlists(id)
 		return {
 			status: 'success',
 			message: 'playlists berhasil dihapus',
@@ -66,9 +66,10 @@ class playlistsHandler {
 	async delete_playlists_songs(request, h) {
 		const { id } = request.params
 		const { id: owner } = request.auth.credentials;
+		console.log(id,owner)
 		await this._playlists_service.verify_playlists_owner(id,owner)
 		this._validator.validate_playlists_songs_payload(request.payload)
-		await this._playlists_songs_service.delete_playlists_songs_owner(id,owner)
+		await this._playlists_songs_service.delete_playlists_songs(id,request.payload)
 		return {
 			status: 'success',
 			message: 'playlists_songs berhasil dihapus',

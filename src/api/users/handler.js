@@ -24,7 +24,7 @@ class usersHandler {
 			status: 'success',
 			message: 'users berhasil ditambahkan',
 			data: {
-				user_id: result
+				userId: result
 			},
 		});
 		response.code(201);

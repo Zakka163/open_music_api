@@ -72,9 +72,9 @@ class songs_service{
 	      values: [ title,year,genre,performer,duration,updatedAt, id ],
 	    };
 
-	    console.log(query)
+	    // console.log(query)
 	    const result = await this._pool.query(query);
-	    console.log(result)
+	    // console.log(result)
 	    if (!result.rowCount) {
 	      throw new not_found_error('Gagal memperbarui songs. Id tidak ditemukan');
 	    }

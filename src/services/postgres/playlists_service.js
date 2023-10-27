@@ -27,7 +27,7 @@ class playlists_service{
 
 	async get_playlists(owner){
 		const query = {
-	      text: 'select * from playlists p where p.owner = $1',
+	      text: 'select p.id,p.name,u.username from playlists p join public.users u  on u."id" = p.owner where p.owner = $1 ',
 	      values: [ owner ],
 	    };
 	    const result = await this._pool.query(query);
@@ -39,14 +39,14 @@ class playlists_service{
 
 	async get_playlists_by_id(id){
 		const query = {
-	      text: 'select * from playlists p where p.id = $1',
+	      text: 'select p.id,p.name,u.username from playlists p join public.users u  on u."id" = p.owner where p.id= $1',
 	      values: [ id ],
 	    };
 	    const result = await this._pool.query(query);
 	    if (!result.rows.length){
 			throw new not_found_error('playlists tidak ditemukan')
 		}
-		return result.rows
+		return result.rows[0]
 	}
 	async delete_playlists(id){
 		const query = {
@@ -69,7 +69,7 @@ class playlists_service{
 	    }
 	    const playlist = result.rows[0]
 	    if (owner !== playlist.owner) {
-	    	throw new not_found_error('Anda tidak berhak mengakses resource ini')
+	    	throw new authorization_error('Anda tidak berhak mengakses resource ini')
 	    }
 
 	}
