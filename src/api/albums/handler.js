@@ -1,8 +1,10 @@
 
 class albumsHandler {
-	constructor(service, validator) {
+	constructor(service, validator,storage_service,uploads_validator) {
 		this._service = service;
+		this._storage_service = storage_service;
 		this._validator = validator;
+		this._uploads_validator = uploads_validator;
 	}
 	async get_albums_by_id(request, h) {
 		const { id } = request.params;
@@ -51,6 +53,28 @@ class albumsHandler {
 			status: 'success',
 			message: 'albums berhasil dihapus'
 		};
+	}
+	async add_cover_albums(request,h){
+		const { id } = request.params;
+		const { cover } = request.payload
+		// console.log(request.payload)
+		this._uploads_validator.validate(cover.hapi.headers)
+
+		const file_name = await this._storage_service.write_file(cover, cover.hapi);
+
+		await this._service.edit_albums(id,{coverUrl:`http://${process.env.HOST}:${process.env.PORT}/assets/file/images/${file_name}`})
+		// console.log(file_location)
+		
+
+		const response = h.response({
+        status: "success",
+        message: "Sampul berhasil diunggah"
+	    });
+	      response.code(201);
+	      return response;
+
+
+
 	}
 
 
