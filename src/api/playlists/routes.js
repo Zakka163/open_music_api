@@ -54,7 +54,15 @@ const routes = (handler) => [
 		options: {
 			auth: 'auth'
 		}
-	}
+	},
+	{
+		method: 'POST',
+		path: '/export/playlists/{id}',
+		handler: (request, h) => handler.export_playlists(request, h),
+		options: {
+			auth: 'auth'
+		}
+	},
 
 ];
 

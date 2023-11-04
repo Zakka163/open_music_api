@@ -32,6 +32,9 @@ const authentications_service = require('./services/postgres/authentications_ser
 const authentications_validator = require('./validator/authentications/index');
 const token_manager = require('./tokenize/token_manager');
 
+// service
+const rabbitmq_service = require('./services/rabbitmq/producer_service');
+const exports_validator = require('./validator/exports/index');
 
 // initiaion
 
@@ -43,7 +46,6 @@ const playlists_services = new playlists_service();
 const playlists_songs_services = new playlists_songs_service();
 const playlists_song_activities_services = new playlists_song_activities_service();
 const authentications_services = new authentications_service();
-
 const plugins = [
 	{
 		plugin: songs,
@@ -66,6 +68,8 @@ const plugins = [
 			playlists_songs_service: playlists_songs_services,
 			playlists_song_activities_service: playlists_song_activities_services,
 			songs_service: songs_services,
+			rabbitmq_service,
+			exports_validator,
 			validator: playlists_validator
 
 		}
