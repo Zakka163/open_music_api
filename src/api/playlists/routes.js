@@ -1,3 +1,4 @@
+const path = require('path')
 const routes = (handler) => [
 	{
 		method: 'POST',
@@ -62,6 +63,15 @@ const routes = (handler) => [
 		options: {
 			auth: 'auth'
 		}
+	},
+	{
+		method: 'GET',
+		path: '/assets/{param*}',
+		handler: {
+			directory: {
+				path:path.resolve(__dirname,'../../../assets'),
+			},
+		},
 	},
 
 ];

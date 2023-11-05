@@ -123,6 +123,24 @@ class playlistsHandler {
 			}
 		};
 	}
+	async get_playlists_activities(request, h) {
+
+		const { id: playlist_id } = request.params;
+		const { id: user_id } = request.auth.credentials;
+
+
+		await this._playlists_songs_service.verify_playlists_collab(playlist_id,user_id);
+		const result = await this._playlists_service.get_playlists_by_id(playlist_id);
+		const result_activities = await this._playlists_song_activities_service.get_playlists_song_activities(playlist_id);
+
+		return {
+			status: 'success',
+			data: {
+				playlistId: result.id,
+				activities: result_activities
+			}
+		};
+	}
 
 	async export_playlists(request, h) {
 

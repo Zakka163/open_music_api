@@ -5,6 +5,10 @@ const albums = require('./api/albums/index');
 const albums_service = require('./services/postgres/albums_service');
 const albums_validator = require('./validator/albums/index');
 
+// album like
+const album_likes = require('./api/album_likes/index');
+const album_likes_service = require('./services/postgres/user_album_likes_service');
+
 // // songs
 const songs = require('./api/songs/index');
 const songs_service = require('./services/postgres/songs_service');
@@ -42,6 +46,11 @@ const exports_validator = require('./validator/exports/index');
 const storage_service = require('./services/storage/storage_service');
 const uploads_validator = require('./validator/uploads/index');
 
+// cache
+const cache_service = require('./services/redis/cache_service')
+
+
+
 // initiaion
 
 const collaborations_services = new collaborations_service();
@@ -53,6 +62,8 @@ const playlists_songs_services = new playlists_songs_service();
 const playlists_song_activities_services = new playlists_song_activities_service();
 const authentications_services = new authentications_service();
 const storage_services = new storage_service(path.resolve(__dirname, '../assets/file/images'));
+const album_likes_services = new album_likes_service(new cache_service());
+
 
 const plugins = [
 	{
@@ -108,7 +119,14 @@ const plugins = [
 			token_manager,
 			validator: authentications_validator
 		}
-	}
+	},
+	{
+		plugin: album_likes,
+		options: {
+			service: album_likes_services,
+			albums_service:albums_services
+		}
+	},
 ];
 
 module.exports = plugins;

@@ -1,6 +1,7 @@
 require('dotenv').config();
 const Hapi = require('@hapi/hapi');
 const Jwt = require('@hapi/jwt');
+const Inert = require('@hapi/inert');
 const plugins = require('./index.js');
 const path = require('path')
 const fs = require('fs')
@@ -58,7 +59,10 @@ const init = async () => {
 	await server.register([
 		{
 			plugin: Jwt
-		}
+		},
+		{
+	      plugin: Inert,
+	    },
 	]);
 
 	// strategi auth jwt
@@ -77,40 +81,7 @@ const init = async () => {
 			}
 		})
 	});
-	server.route({
-		method: 'POST',
-		path: '/uploads',
-		handler: async (request) => {
-
-
-			console.log(request.payload.data)
-			const filename = request.payload.data.hapi.filename
-			const directory = path.resolve(__dirname, 'uploads');
-			if(!fs.existsSync(directory)){
-				fs.mkdirSync(directory);
-			}
-			const location =  `${directory}/${filename}`
-			const fileStream = fs.createWriteStream(location);
-
-			try{
-				const result = await new Promise((resolve,reject)=>{
-					fileStream.on('error', (error) => reject(error))
-					request.payload.data.pipe(fileStream);
-					request.payload.data.on('end', () => resolve(filename));
-				})
-				return { message: `Berkas ${result} berhasil diproses!` };
-			}catch(err){
-				return { message: `Berkas gagal diproses` };
-			}
-		},
-		options: {
-		  payload: {
-		    allow: 'multipart/form-data',
-		    multipart: true,
-		    output:'stream'
-		  },
-		},
-	});
+	
 	// registrasi plugins
 	await server.register(plugins);
 
