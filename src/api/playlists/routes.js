@@ -1,3 +1,5 @@
+const path = require('path');
+
 const routes = (handler) => [
 	{
 		method: 'POST',
@@ -53,6 +55,23 @@ const routes = (handler) => [
 		handler: (request, h) => handler.get_playlists_activities(request, h),
 		options: {
 			auth: 'auth'
+		}
+	},
+	{
+		method: 'POST',
+		path: '/export/playlists/{id}',
+		handler: (request, h) => handler.export_playlists(request, h),
+		options: {
+			auth: 'auth'
+		}
+	},
+	{
+		method: 'GET',
+		path: '/assets/{param*}',
+		handler: {
+			directory: {
+				path:path.resolve(__dirname,'../../../assets')
+			}
 		}
 	}
 

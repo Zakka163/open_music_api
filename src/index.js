@@ -1,7 +1,13 @@
+const path = require('path');
+
 // albums
 const albums = require('./api/albums/index');
 const albums_service = require('./services/postgres/albums_service');
 const albums_validator = require('./validator/albums/index');
+
+// album like
+const album_likes = require('./api/album_likes/index');
+const album_likes_service = require('./services/postgres/user_album_likes_service');
 
 // // songs
 const songs = require('./api/songs/index');
@@ -32,6 +38,18 @@ const authentications_service = require('./services/postgres/authentications_ser
 const authentications_validator = require('./validator/authentications/index');
 const token_manager = require('./tokenize/token_manager');
 
+// message_broker
+const rabbitmq_service = require('./services/rabbitmq/producer_service');
+const exports_validator = require('./validator/exports/index');
+
+// storage
+const storage_service = require('./services/storage/storage_service');
+const uploads_validator = require('./validator/uploads/index');
+
+// cache
+const cache_service = require('./services/redis/cache_service');
+
+
 
 // initiaion
 
@@ -43,6 +61,9 @@ const playlists_services = new playlists_service();
 const playlists_songs_services = new playlists_songs_service();
 const playlists_song_activities_services = new playlists_song_activities_service();
 const authentications_services = new authentications_service();
+const storage_services = new storage_service(path.resolve(__dirname, '../assets/file/images'));
+const album_likes_services = new album_likes_service(new cache_service());
+
 
 const plugins = [
 	{
@@ -56,7 +77,9 @@ const plugins = [
 		plugin: albums,
 		options: {
 			service: albums_services,
-			validator: albums_validator
+			validator: albums_validator,
+			storage_service: storage_services,
+			uploads_validator
 		}
 	},
 	{
@@ -66,6 +89,8 @@ const plugins = [
 			playlists_songs_service: playlists_songs_services,
 			playlists_song_activities_service: playlists_song_activities_services,
 			songs_service: songs_services,
+			rabbitmq_service,
+			exports_validator,
 			validator: playlists_validator
 
 		}
@@ -93,6 +118,13 @@ const plugins = [
 			users_service: users_services,
 			token_manager,
 			validator: authentications_validator
+		}
+	},
+	{
+		plugin: album_likes,
+		options: {
+			service: album_likes_services,
+			albums_service: albums_services
 		}
 	}
 ];
