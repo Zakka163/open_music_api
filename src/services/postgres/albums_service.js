@@ -16,7 +16,7 @@ class albums_service {
 		const createdAt = moment();
 		const query = {
 			text: 'insert into albums values($1, $2, $3, $4,$5,$6) returning id',
-			values: [nanoid(14), name, year, createdAt, createdAt,coverUrl,]
+			values: [nanoid(14), name, year, createdAt, createdAt,coverUrl]
 		};
 
 		const result = await this._pool.query(query);
@@ -53,7 +53,7 @@ class albums_service {
 	async edit_albums(id, { name, year,coverUrl }) {
 		const updatedAt = moment();
 		const query = {
-			text: `update albums set "name" = COALESCE (NULLIF($1, ''), name), "year" = COALESCE (NULLIF($2, 0), year), "updatedAt" = $3 ,"coverUrl" = $4 where id = $5 returning *`,
+			text: 'update albums set "name" = COALESCE (NULLIF($1, \'\'), name), "year" = COALESCE (NULLIF($2, 0), year), "updatedAt" = $3 ,"coverUrl" = $4 where id = $5 returning *',
 			values: [name, year, updatedAt,coverUrl, id]
 		};
 

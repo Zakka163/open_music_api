@@ -1,4 +1,4 @@
-const path = require('path')
+const path = require('path');
 
 // albums
 const albums = require('./api/albums/index');
@@ -47,7 +47,7 @@ const storage_service = require('./services/storage/storage_service');
 const uploads_validator = require('./validator/uploads/index');
 
 // cache
-const cache_service = require('./services/redis/cache_service')
+const cache_service = require('./services/redis/cache_service');
 
 
 
@@ -78,7 +78,7 @@ const plugins = [
 		options: {
 			service: albums_services,
 			validator: albums_validator,
-			storage_service:storage_services,
+			storage_service: storage_services,
 			uploads_validator
 		}
 	},
@@ -90,7 +90,7 @@ const plugins = [
 			playlists_song_activities_service: playlists_song_activities_services,
 			songs_service: songs_services,
 			rabbitmq_service,
-			exports_validator:exports_validator,
+			exports_validator,
 			validator: playlists_validator
 
 		}
@@ -124,9 +124,9 @@ const plugins = [
 		plugin: album_likes,
 		options: {
 			service: album_likes_services,
-			albums_service:albums_services
+			albums_service: albums_services
 		}
-	},
+	}
 ];
 
 module.exports = plugins;

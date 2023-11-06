@@ -149,14 +149,14 @@ class playlistsHandler {
 
 		await this._exports_validator.validate(request.payload);
 		const message = {
-			playlist_id: playlist_id,
-			target_email: request.payload.targetEmail,
+			playlist_id,
+			target_email: request.payload.targetEmail
 		};
 		await this._playlists_service.verify_playlists_owner(playlist_id, owner);
 		await this._rabbitmq_service.send_message('export:playlists', JSON.stringify(message));
 		const response = h.response({
 			status: 'success',
-			message: 'Permintaan Anda sedang kami proses',
+			message: 'Permintaan Anda sedang kami proses'
 		});
 		response.code(201);
 		return response;

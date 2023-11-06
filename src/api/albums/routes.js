@@ -24,11 +24,11 @@ const routes = (handler) => [
 		path: '/albums/{id}/covers',
 		handler: (request, h) => handler.add_cover_albums(request, h),
 		options: {
-	      payload: {
-	        allow: 'multipart/form-data',
-	        multipart: true,
-	        output: 'stream',
-	        maxBytes: 512000
+			payload: {
+				allow: 'multipart/form-data',
+				multipart: true,
+				output: 'stream',
+				maxBytes: 512000
 			}
 		}
 	}

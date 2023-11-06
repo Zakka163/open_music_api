@@ -3,8 +3,6 @@ const Hapi = require('@hapi/hapi');
 const Jwt = require('@hapi/jwt');
 const Inert = require('@hapi/inert');
 const plugins = require('./index.js');
-const path = require('path')
-const fs = require('fs')
 
 // error
 const client_error = require('./exceptions/client_error');
@@ -61,8 +59,8 @@ const init = async () => {
 			plugin: Jwt
 		},
 		{
-	      plugin: Inert,
-	    },
+			plugin: Inert
+		}
 	]);
 
 	// strategi auth jwt
@@ -81,7 +79,7 @@ const init = async () => {
 			}
 		})
 	});
-	
+
 	// registrasi plugins
 	await server.register(plugins);
 

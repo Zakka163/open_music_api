@@ -1,4 +1,5 @@
-const path = require('path')
+const path = require('path');
+
 const routes = (handler) => [
 	{
 		method: 'POST',
@@ -69,10 +70,10 @@ const routes = (handler) => [
 		path: '/assets/{param*}',
 		handler: {
 			directory: {
-				path:path.resolve(__dirname,'../../../assets'),
-			},
-		},
-	},
+				path:path.resolve(__dirname,'../../../assets')
+			}
+		}
+	}
 
 ];
 
