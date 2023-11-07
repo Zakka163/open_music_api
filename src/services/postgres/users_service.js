@@ -17,7 +17,7 @@ class users_service {
 		const hash_password = await bcrypt.hash(password, 10);
 		const query = {
 			text: 'insert into users values($1,$2,$3,$4) returning id',
-			values: [nanoid(20), username, hash_password, fullname]
+			values: [`user-${nanoid(20)}`, username, hash_password, fullname]
 		};
 
 		const result = await this._pool.query(query);

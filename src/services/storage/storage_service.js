@@ -11,7 +11,7 @@ class StorageService {
 	}
 
 	write_file(file, meta) {
-		let file_name = moment().toString() + meta.filename;
+		let file_name = + new Date() + meta.filename;
 		file_name = file_name.split(' ').join('');
 		const path = `${this._folder}/${file_name}`;
 

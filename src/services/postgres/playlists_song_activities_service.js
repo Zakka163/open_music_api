@@ -12,7 +12,7 @@ class playlists_song_activities_service {
 
 	async get_playlists_song_activities(playlist_id) {
 		const query = {
-			text: 'select u.username,s.title,ps.action,ps.time from playlists_song_activities ps  join users u on u.id = ps."userId" join songs s on s.id = ps."songId" where ps."playlistId" = $1 order by  ps."time" asc',
+			text: 'select u.username,s.title,ps.action,ps.time from playlists_song_activities ps  join users u on u.id = ps."userId" join songs s on s.id = ps."songId" where ps."playlistId" = $1 order by  ps."time" desc, ps."action" asc',
 			values: [playlist_id]
 		};
 		const result = await this._pool.query(query);

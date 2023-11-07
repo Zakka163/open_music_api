@@ -19,6 +19,7 @@ class usersHandler {
 		this._validator.validate(request.payload);
 
 		const result = await this._service.add_users(request.payload);
+		console.log(result);
 		const response = h.response({
 			status: 'success',
 			message: 'users berhasil ditambahkan',

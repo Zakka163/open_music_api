@@ -10,7 +10,7 @@ class Handler {
 
 		const { id: user_id } = request.auth.credentials;
 		const { id: album_id } = request.params;
-		// console.log(user_id,album_id)
+
 
 		await this._albums_service.get_albums_by_id(album_id);
 		await this._service.add_user_album_likes(album_id, user_id);
