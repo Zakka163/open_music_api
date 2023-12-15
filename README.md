@@ -1,6 +1,6 @@
-# opendiscuss
+# open music
 
-Opendiscuss is a community platform where people contribute to discuss various topics.
+open music is a platform where people share albums and songs.
 
 ## User Stories
 
@@ -8,40 +8,40 @@ You can find user stories in the file [README-user-story.md](README-user-story.m
 
 ## Entiry Relationship Diagram
 
-You can view the ERD on [dbdiagram](https://dbdiagram.io/d/opendiscuss-erd-64e854c002bd1c4a5e6392d5) and [dbdocs](https://dbdocs.io/hidayathamir/opendiscuss).
+
 
 ![erd](README_asset/erd_open_music.png)
 
 ## Quick Start
 
-(* You can check this youtube video for [Quick Start Opendiscuss](https://youtu.be/sK3WQV0KyAw). *)
+
 
 1. Rename `.env-example` to `.env`.
 
-2. Run the MySQL database and the Go app using Docker Compose:
+2. Run the POSTGRES database and the Go app using Docker Compose:
 
 ```shell
 sudo docker compose up --build
 ```
 
-MySQL credentials is:
+POSTGRES credentials is:
 
 ```
-DB_USER="user"
-DB_PASSWORD="password"
+DB_USER="postgres"
+DB_PASSWORD="root"
 DB_HOST="localhost"
-DB_PORT="9306"
-DB_NAME="opendiscuss"
+DB_PORT="5439"
+DB_NAME="open_music"
 ```
 
 Test hit API login:
 
 ```shell
-curl --location 'http://localhost:9080/api/v1/login' \
+curl --location 'http://localhost:8080/authentications' \
 --header 'Content-Type: application/json' \
 --data '{
-    "username": "abdan",
-    "password": "abdan"
+    "username": "admin",
+    "password": "admin"
 }'
 ```
 
@@ -49,4 +49,4 @@ Check [README-user-story.md](README-user-story.md) for other API.
 
 ## API Documentation
 
-For API documentation, you can import the file [postman/opendiscuss.postman_collection.json](postman/opendiscuss.postman_collection.json) into your Postman.
+For API documentation, you can import the file [postman/open_music_api.postman_collection.json](postman/open_music_api.postman_collection.json),env [postman/open_music_api.postman_environment.json](postman/open_music_api.postman_environment.json) into your Postman.
