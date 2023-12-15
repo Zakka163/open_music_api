@@ -1,6 +1,6 @@
-# openmusic
+# open music
 
-Opendiscuss is a community platform where people contribute to discuss various topics.
+open music is a platform where people share albums and songs.
 
 ## User Stories
 
@@ -31,7 +31,7 @@ DB_USER="postgres"
 DB_PASSWORD="root"
 DB_HOST="localhost"
 DB_PORT="5439"
-DB_NAME="open_Music"
+DB_NAME="open_music"
 ```
 
 Test hit API login:
@@ -49,4 +49,4 @@ Check [README-user-story.md](README-user-story.md) for other API.
 
 ## API Documentation
 
-For API documentation, you can import the file [postman/opendiscuss.postman_collection.json](postman/opendiscuss.postman_collection.json) into your Postman.
+For API documentation, you can import the file [postman/open_music_api.postman_collection.json](postman/open_music_api.postman_collection.json),env [postman/open_music_api.postman_environment.json](postman/open_music_api.postman_environment.json) into your Postman.
