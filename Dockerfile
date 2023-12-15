@@ -1,8 +1,9 @@
-FROM node:10-alpine
+FROM node:18-alpine
 RUN mkdir  /home/app
 WORKDIR /home/app
-COPY ./* /home/app
-RUN npm install
+COPY / /home/app
+RUN npm install 
+RUN npm install nodemon -g
 
 
 
